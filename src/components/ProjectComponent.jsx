@@ -289,12 +289,12 @@ function ProjectComponent(props) {
               ></progress>
             </div>
             <div className="fundingValue">
-              <h2>{projectDetails.amountRaised / PRECISION} AVAX</h2>
+              <h2>{projectDetails.amountRaised / PRECISION} ETH</h2>
             </div>
             <p className="goalValueContainer">
               pledged of{" "}
               <span className="goalValue">
-                {projectDetails.fundingGoal / PRECISION} AVAX
+                {projectDetails.fundingGoal / PRECISION} ETH
               </span>{" "}
               goal
             </p>

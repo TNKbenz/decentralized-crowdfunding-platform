@@ -167,7 +167,7 @@ function CreateProjectComponent(props) {
           placeholder="Enter link to the project"
           onChange={handleChange}
         />
-        <label>Funding Goal (AVAX)</label>
+        <label>Funding Goal (ETH)</label>
         <input
           type="number"
           step="1"

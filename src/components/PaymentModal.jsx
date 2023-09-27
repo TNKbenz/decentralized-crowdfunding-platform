@@ -15,7 +15,7 @@ function PaymentModal(props) {
     setAmount(e.target.value);
   }
 
-  // call function in the smart contract to send AVAX token
+  // call function in the smart contract to send ETH token
   // to fund the project
   async function sendFund() {
     console.log("Sending fund...");
@@ -27,7 +27,7 @@ function PaymentModal(props) {
       let fund = { value: ethers.utils.parseEther(amount.toString()) };
       let txn = await props.contract.fundProject(props.index, fund);
       await txn.wait();
-      alert(`${amount} AVAX Succesfully funded`);
+      alert(`${amount} ETH Succesfully funded`);
 
       setAmount(1);
       closeModal();
@@ -35,7 +35,7 @@ function PaymentModal(props) {
       console.log("Funding error: ");
       console.log(error);
       console.log("................");
-      alert("Error Sending AVAX");
+      alert("Error Sending ETH");
     }
   }
 
@@ -51,13 +51,13 @@ function PaymentModal(props) {
       </div>
       <div className="modalContent">
         <div className="paymentForm">
-          <label className="paymentLabel">Amount (AVAX)</label>
+          <label className="paymentLabel">Amount (ETH)</label>
           <input
             type="number"
             name="payment"
             id="payment"
             className="payment"
-            placeholder="Enter AVAX amount"
+            placeholder="Enter ETH amount"
             min="1"
             step="1"
             value={amount}

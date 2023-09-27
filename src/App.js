@@ -11,7 +11,7 @@ import ProfileComponent from "./components/ProfileComponent";
 import { useState } from "react";
 import { ethers } from "ethers";
 import { abi } from "./abi";
-const CONTRACT_ADDRESS = "0xad7C61FC480E5EEBA7886Fc62A789F9921caC9d7";
+const CONTRACT_ADDRESS = "0x0b7aA9A74D7742E25D8CB110D71Efc888ea54e40"; 
 
 function App() {
   const [myContract, setMyContract] = useState(null);
@@ -23,7 +23,7 @@ function App() {
     try {
       await window.ethereum.request({
         method: "wallet_switchEthereumChain",
-        params: [{ chainId: "0xa869" }],
+        params: [{ chainId: "11155111" }],
       });
     } catch (switchError) {
       // This error code indicates that the chain has not been added to MetaMask.
@@ -33,14 +33,14 @@ function App() {
             method: "wallet_addEthereumChain",
             params: [
               {
-                chainId: "0xa869",
-                chainName: "Avalanche Fuji Testnet",
+                chainId: "11155111",
+                chainName: "Sepolia",
                 nativeCurrency: {
-                  name: "Avalanche",
-                  symbol: "AVAX",
+                  name: "Sepolia Ether ",
+                  symbol: "ETH",
                   decimals: 18,
                 },
-                rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
+                rpcUrls: ["https://sepolia.rpc.thirdweb.com"],
               },
             ],
           });
