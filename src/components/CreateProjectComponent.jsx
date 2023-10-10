@@ -173,7 +173,7 @@ function CreateProjectComponent(props) {
           step="1"
           name="goal"
           placeholder="Enter the funding goal"
-          min="0.0001"
+          min="1"
           required
           onChange={handleChange}
         />
