@@ -2,7 +2,7 @@ import PaymentModal from "./PaymentModal";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import dummyPic from "../assets/pg1.jpg";
+import dummyPic from "../assets/pg2.png";
 
 function ProjectComponent(props) {
   const [modalShow, setModalShow] = useState(false);
@@ -56,19 +56,21 @@ function ProjectComponent(props) {
           category,
           refundClaimed,
           claimedAmount,
-        } = { ...res };        
+        } = { ...res };
 
         let tmp = [];
         for (const index in contributors) {
           tmp.push({
             contributor: contributors[index],
             amount: amount[index],
-            refundClaimed: refundClaimed[index]
+            refundClaimed: refundClaimed[index],
           });
         }
 
-        tmp.sort((a, b) => {return (b.amount - a.amount)});
-        
+        tmp.sort((a, b) => {
+          return b.amount - a.amount;
+        });
+
         let contributorsCopy = [];
         let amountCopy = [];
         let refundClaimedCopy = [];
@@ -148,7 +150,7 @@ function ProjectComponent(props) {
     updateProgressBar();
   }, [projectDetails]);
 
-  // sets the condition true for payment modal to render 
+  // sets the condition true for payment modal to render
   function onClickPayment() {
     setModalShow(true);
   }
@@ -167,101 +169,101 @@ function ProjectComponent(props) {
     );
   }
 
-
   // check if user is the project owner
   function isOwner() {
-      return (props.userAddress === projectDetails.creatorAddress);
+    return props.userAddress === projectDetails.creatorAddress;
   }
 
   // check if claiming fund is possible for the project owner
   function claimFundCheck() {
-    return (projectDetails.refundPolicy ? (projectDetails.amountRaised / PRECISION) : (projectDetails.amountRaised >= projectDetails.fundingGoal));
+    return projectDetails.refundPolicy
+      ? projectDetails.amountRaised / PRECISION
+      : projectDetails.amountRaised >= projectDetails.fundingGoal;
   }
-
 
   // claim fund by calling function in the smart contract
   async function claimFund() {
-      let txn;
-      try {
-        txn = await props.contract.claimFund(parseInt(index));
-        await txn.wait(txn);
-        alert('Fund succesfully claimed');
+    let txn;
+    try {
+      txn = await props.contract.claimFund(parseInt(index));
+      await txn.wait(txn);
+      alert("Fund succesfully claimed");
 
-        setProjectDetails({
-            amountRaised: projectDetails.amountRaised,
-            cid: projectDetails.cid,
-            creatorName: projectDetails.creatorName,
-            fundingGoal: projectDetails.fundingGoal,
-            projectDescription: projectDetails.projectDescription,
-            projectName: projectDetails.projectName,
-            contributors: projectDetails.contributors,
-            creationTime: projectDetails.creationTime * 1,
-            duration: projectDetails.duration,
-            projectLink: projectDetails.projectLink,
-            amount: projectDetails.amount,
-            creatorAddress: projectDetails.creatorAddress,
-            refundPolicy: projectDetails.refundPolicy,
-            category: projectDetails.category,
-            refundClaimed: projectDetails.refundClaimed,
-            claimedAmount: true
-          });
-
-      }catch(error) {
-        alert('Error claiming fund: ' + error);
-        console.log(error);
-      }    
+      setProjectDetails({
+        amountRaised: projectDetails.amountRaised,
+        cid: projectDetails.cid,
+        creatorName: projectDetails.creatorName,
+        fundingGoal: projectDetails.fundingGoal,
+        projectDescription: projectDetails.projectDescription,
+        projectName: projectDetails.projectName,
+        contributors: projectDetails.contributors,
+        creationTime: projectDetails.creationTime * 1,
+        duration: projectDetails.duration,
+        projectLink: projectDetails.projectLink,
+        amount: projectDetails.amount,
+        creatorAddress: projectDetails.creatorAddress,
+        refundPolicy: projectDetails.refundPolicy,
+        category: projectDetails.category,
+        refundClaimed: projectDetails.refundClaimed,
+        claimedAmount: true,
+      });
+    } catch (error) {
+      alert("Error claiming fund: " + error);
+      console.log(error);
+    }
   }
 
   // check if the user is a contributor to the project
   function checkIfContributor() {
-      let idx = getContributorIndex();
-      return ((idx < 0) ? false : true);
+    let idx = getContributorIndex();
+    return idx < 0 ? false : true;
   }
 
   // get the contributor index of the user in the contributor[]
   function getContributorIndex() {
-      let idx = projectDetails.contributors.indexOf(props.userAddress);
-      return idx;
+    let idx = projectDetails.contributors.indexOf(props.userAddress);
+    return idx;
   }
 
   // check if claiming refund is possible for the user
   function claimRefundCheck() {
-      return (projectDetails.refundPolicy ? false : (projectDetails.amountRaised < projectDetails.fundingGoal));
+    return projectDetails.refundPolicy
+      ? false
+      : projectDetails.amountRaised < projectDetails.fundingGoal;
   }
 
   // claim refund by calling the function in the smart contract
   async function claimRefund() {
-      let txn;
-      try {
-        txn = await props.contract.claimRefund(parseInt(index));
-        await txn.wait(txn);
-        alert('Refund claimed succesfully');
-        let refundClaimedCopy = [...projectDetails.refundClaimed];
-        refundClaimedCopy[getContributorIndex()] = true;
+    let txn;
+    try {
+      txn = await props.contract.claimRefund(parseInt(index));
+      await txn.wait(txn);
+      alert("Refund claimed succesfully");
+      let refundClaimedCopy = [...projectDetails.refundClaimed];
+      refundClaimedCopy[getContributorIndex()] = true;
 
-        setProjectDetails({
-            amountRaised: projectDetails.amountRaised,
-            cid: projectDetails.cid,
-            creatorName: projectDetails.creatorName,
-            fundingGoal: projectDetails.fundingGoal,
-            projectDescription: projectDetails.projectDescription,
-            projectName: projectDetails.projectName,
-            contributors: projectDetails.contributors,
-            creationTime: projectDetails.creationTime * 1,
-            duration: projectDetails.duration,
-            projectLink: projectDetails.projectLink,
-            amount: projectDetails.amount,
-            creatorAddress: projectDetails.creatorAddress,
-            refundPolicy: projectDetails.refundPolicy,
-            category: projectDetails.category,
-            refundClaimed: refundClaimedCopy,
-            claimedAmount: true
-          });
-
-      }catch(error) {
-          alert('Error claiming refund: ' + error);
-          console.log(error);
-      }
+      setProjectDetails({
+        amountRaised: projectDetails.amountRaised,
+        cid: projectDetails.cid,
+        creatorName: projectDetails.creatorName,
+        fundingGoal: projectDetails.fundingGoal,
+        projectDescription: projectDetails.projectDescription,
+        projectName: projectDetails.projectName,
+        contributors: projectDetails.contributors,
+        creationTime: projectDetails.creationTime * 1,
+        duration: projectDetails.duration,
+        projectLink: projectDetails.projectLink,
+        amount: projectDetails.amount,
+        creatorAddress: projectDetails.creatorAddress,
+        refundPolicy: projectDetails.refundPolicy,
+        category: projectDetails.category,
+        refundClaimed: refundClaimedCopy,
+        claimedAmount: true,
+      });
+    } catch (error) {
+      alert("Error claiming refund: " + error);
+      console.log(error);
+    }
   }
 
   return (
@@ -310,35 +312,42 @@ function ProjectComponent(props) {
                 time left for funding
               </p>
             )}
-            {!isOver ? (!isOwner() && (
+            {!isOver ? (
+              !isOwner() && (
+                <div className="supportButtonContainer">
+                  <button
+                    className="supportButton"
+                    onClick={() => onClickPayment()}
+                  >
+                    Back this project
+                  </button>
+                </div>
+              )
+            ) : isOwner() ? (
+              claimFundCheck() && !projectDetails.claimedAmount ? (
+                <div className="supportButtonContainer">
+                  <button className="supportButton" onClick={() => claimFund()}>
+                    Claim Fund
+                  </button>
+                </div>
+              ) : projectDetails.claimedAmount ? (
+                <h2 style={{ color: "red" }}>Fund claimed!</h2>
+              ) : (
+                ""
+              )
+            ) : checkIfContributor() &&
+              claimRefundCheck() &&
+              !projectDetails.refundClaimed[getContributorIndex()] ? (
               <div className="supportButtonContainer">
-                <button
-                  className="supportButton"
-                  onClick={() => onClickPayment()}
-                >
-                  Back this project
-                </button>
-              </div>
-            )) : isOwner() ? ((claimFundCheck() && !projectDetails.claimedAmount) ? (
-              <div className="supportButtonContainer">
-                <button
-                  className="supportButton"
-                  onClick={() => claimFund()}
-                >
-                  Claim Fund
-                </button>
-              </div>
-            ) : (projectDetails.claimedAmount ? (<h2 style={ { color: 'red' } }>Fund claimed!</h2>) : '')) : (
-                (checkIfContributor() && claimRefundCheck() && !projectDetails.refundClaimed[getContributorIndex()]) ?
-                (<div className="supportButtonContainer">
-                <button
-                  className="supportButton"
-                  onClick={() => claimRefund()}
-                >
+                <button className="supportButton" onClick={() => claimRefund()}>
                   Claim Refund
                 </button>
               </div>
-            ) : (projectDetails.refundClaimed[getContributorIndex()] ? (<h2 style={{ color: 'red' }}>Refund Claimed!</h2>) : ''))}
+            ) : projectDetails.refundClaimed[getContributorIndex()] ? (
+              <h2 style={{ color: "red" }}>Refund Claimed!</h2>
+            ) : (
+              ""
+            )}
             {modalShow && (
               <PaymentModal
                 setModalShow={setModalShow}
@@ -405,7 +414,9 @@ function ProjectComponent(props) {
         <div className="contributorHeader">Contributors</div>
         <div className="contributors">
           <div className="tableRow header">
-            <div className="item border" style={{width: "80px"}}>Sno.</div>
+            <div className="item border" style={{ width: "80px" }}>
+              Sno.
+            </div>
             <div className="item border">Address</div>
             <div className="item border">Amount</div>
           </div>
@@ -417,7 +428,9 @@ function ProjectComponent(props) {
                 }
                 key={idx}
               >
-                <div className="item border" style={{width: "80px"}}>{idx + 1 + "."}</div>
+                <div className="item border" style={{ width: "80px" }}>
+                  {idx + 1 + "."}
+                </div>
                 <div className="item border">{contributor}</div>
                 <div className="item border">
                   {projectDetails.amount[idx] / PRECISION}

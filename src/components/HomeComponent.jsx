@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CategoryComponent from "./CategoryComponent";
 import ScrollShowbarComponent from "./ScrollShowbarComponent";
 import { Link } from "react-router-dom";
-import dummyPic from "../assets/pg1.jpg";
+import dummyPic from "../assets/pg2.png";
 
 export default function HomeComponent(props) {
   const PRECISION = 10 ** 18;
@@ -65,14 +65,14 @@ export default function HomeComponent(props) {
       return (
         <div className="recommendationCard" key={index}>
           <Link to="/project" state={{ index: project.index }}>
-            <div
-              className="rcmdCardImg"
-              style={{
-                backgroundImage: project.cid
-                  ? `url(${"https://" + project.cid})`
-                  : dummyPic,
-              }}
-            ></div>
+            <div className="rcmdCardImg">
+              <img
+                src={project.cid ? "https://" + project.cid : dummyPic}
+                alt="test-pic"
+                width="100%"
+                height="100%"
+              />
+            </div>
           </Link>
           <div className="rcmdCardDetails">
             <div className="rcmdCardHeading">
@@ -130,12 +130,25 @@ export default function HomeComponent(props) {
               <Link to="/project" state={{ index: featuredRcmd[0].index }}>
                 <div
                   className="featuredCardProjectImg"
-                  style={{
-                    backgroundImage: featuredRcmd[0].cid
-                      ? `url(${"https://" + featuredRcmd[0].cid})`
-                      : dummyPic,
-                  }}
-                ></div>
+                  // style={{
+                  //   backgroundImage: featuredRcmd[0].cid
+                  //     ? `url(${"https://" + featuredRcmd[0].cid})`
+                  //     : dummyPic,
+                  //   width: "100%",
+                  //   height: "100%",
+                  // }}
+                >
+                  <img
+                    src={
+                      featuredRcmd[0].cid
+                        ? "https://" + featuredRcmd[0].cid
+                        : dummyPic
+                    }
+                    alt="test-pic"
+                    width="100%"
+                    height="40%"
+                  />
+                </div>
               </Link>
               <div className="featuredProjectHeading">
                 <Link to="/project" state={{ index: featuredRcmd[0].index }}>

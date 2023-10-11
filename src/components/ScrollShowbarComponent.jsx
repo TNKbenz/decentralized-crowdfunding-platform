@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { BsArrowLeftCircle, BsArrowRightCircle } from "react-icons/bs";
-import dummyPic from "../assets/pg1.jpg";
+import dummyPic from "../assets/pg2.png";
 
 export default function ScrollShowbarComponent(props) {
   const scroll = (val) => {
@@ -12,14 +12,14 @@ export default function ScrollShowbarComponent(props) {
       return (
         <div className="projectCard" key={index}>
           <Link to="/project" state={{ index: project.index }}>
-            <div
-              className="cardImg"
-              style={{
-                backgroundImage: project.cid
-                  ? `url(${"https://" + project.cid})`
-                  : dummyPic,
-              }}
-            ></div>
+            <div className="cardImg">
+              <img
+                src={project.cid ? "https://" + project.cid : dummyPic}
+                alt="test-pic"
+                width="300"
+                height="170"
+              />
+            </div>
           </Link>
           <div className="cardDetail">
             <div className="cardTitle">

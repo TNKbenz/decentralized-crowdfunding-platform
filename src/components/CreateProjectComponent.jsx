@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { create } from "ipfs-http-client";
-import { Web3Storage } from 'web3.storage';
+import { Web3Storage } from "web3.storage";
 
 function CreateProjectComponent(props) {
   const [formInput, setFormInput] = useState({
@@ -55,7 +55,9 @@ function CreateProjectComponent(props) {
   // submit the form input data to smart contract
   async function submitProjectData(e) {
     // handle the submit action of the form
-    const client = new Web3Storage({ token: process.env.WEB3_STORAGE_API_TOKEN });
+    const client = new Web3Storage({
+      token: process.env.REACT_APP_WEB3_STORAGE_API_TOKEN,
+    });
     e.preventDefault();
     if (inputImage) {
       try {
@@ -159,7 +161,9 @@ function CreateProjectComponent(props) {
           accept="image/*"
           onChange={handleImageChange}
         />
-        <p className="caution">*Image of resolution 1920x1080 is preffered for better display</p>
+        <p className="caution">
+          *Image of resolution 1920x1080 is preffered for better display
+        </p>
         <label>Project Link</label>
         <input
           type="url"

@@ -1,6 +1,6 @@
 import CategoryComponent from "./CategoryComponent";
 import { useEffect, useState } from "react";
-import dummyPic from "../assets/pg1.jpg";
+import dummyPic from "../assets/pg2.png";
 import { Link, useLocation } from "react-router-dom";
 
 export default function DiscoverComponent(props) {
@@ -64,14 +64,12 @@ export default function DiscoverComponent(props) {
         <Link to="/project" state={{ index: project.index }} key={index}>
           <div className="projectCardWrapper">
             <div className="projectCard">
-              <div
-                className="cardImg"
-                style={{
-                  backgroundImage: project.cid
-                    ? `url(${"https://" + project.cid})`
-                    : dummyPic,
-                }}
-              ></div>
+              <img
+                src={project.cid ? "https://" + project.cid : dummyPic}
+                alt="test-pic"
+                width="300"
+                height="250"
+              />
               <div className="cardDetail">
                 <div className="cardTitle">{project.projectName}</div>
                 <div className="cardDesc">{project.projectDescription}</div>
