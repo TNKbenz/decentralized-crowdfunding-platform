@@ -249,4 +249,20 @@ contract crowdfunding{
         projects[_index].refundClaimed[contributorIndex] = true;
         payable(msg.sender).transfer(projects[_index].amount[contributorIndex]);
     }
+    
+    // ฟังก์ชันสำหรับขอเงินคืนเมื่อเปลี่ยนใจ
+    function requestRefund(uint256 _index) validIndex(_index) public {
+        require(projects[_index].duration + projects[_index].creationTime >= block.timestamp, "Project Funding Time Expired");
+        require(projects[_index].refundPolicy == RefundPolicy.REFUNDABLE , "Funding goal not reached");
+
+        int256 index = getContributorIndex(_index);
+        require(index != -1, "You did not contribute to this project");
+
+        uint256 contributorIndex = uint256(index);
+        require(!projects[_index].refundClaimed[contributorIndex], "Already claimed refund amount");
+        
+        // ส่งเงินคืนให้ผู้สนับสนุน
+        projects[_index].refundClaimed[contributorIndex] = true;
+        payable(msg.sender).transfer(projects[_index].amount[contributorIndex]);
+    }
 }

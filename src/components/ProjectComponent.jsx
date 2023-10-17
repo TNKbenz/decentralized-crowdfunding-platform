@@ -232,6 +232,39 @@ function ProjectComponent(props) {
       : projectDetails.amountRaised < projectDetails.fundingGoal;
   }
 
+  async function requestRefund() {
+    let txn;
+    try {
+      txn = await props.contract.requestRefund(parseInt(index));
+      await txn.wait();
+      alert("Refund request sent successfully");
+      let refundClaimedCopy = [...projectDetails.refundClaimed];
+      refundClaimedCopy[getContributorIndex()] = true;
+
+      setProjectDetails({
+        amountRaised: projectDetails.amountRaised,
+        cid: projectDetails.cid,
+        creatorName: projectDetails.creatorName,
+        fundingGoal: projectDetails.fundingGoal,
+        projectDescription: projectDetails.projectDescription,
+        projectName: projectDetails.projectName,
+        contributors: projectDetails.contributors,
+        creationTime: projectDetails.creationTime * 1,
+        duration: projectDetails.duration,
+        projectLink: projectDetails.projectLink,
+        amount: projectDetails.amount,
+        creatorAddress: projectDetails.creatorAddress,
+        refundPolicy: projectDetails.refundPolicy,
+        category: projectDetails.category,
+        refundClaimed: refundClaimedCopy,
+        claimedAmount: true,
+      });
+    } catch (error) {
+      alert("Error claiming refund: " + error);
+      console.log(error);
+    }
+  }
+
   // claim refund by calling the function in the smart contract
   async function claimRefund() {
     let txn;
@@ -320,6 +353,14 @@ function ProjectComponent(props) {
                     onClick={() => onClickPayment()}
                   >
                     Back this project
+                  </button>
+                  <br /> 
+                  <br /> 
+                  <button
+                    className="supportButton"
+                    onClick={() => claimRefund()}
+                  >
+                    requestRefund
                   </button>
                 </div>
               )
