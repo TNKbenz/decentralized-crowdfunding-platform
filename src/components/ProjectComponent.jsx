@@ -232,14 +232,17 @@ function ProjectComponent(props) {
       : projectDetails.amountRaised < projectDetails.fundingGoal;
   }
 
-  async function requestRefund() {
-    let txn;
+  async function requestRefund() { 
+    let txn;  
     try {
-      txn = await props.contract.requestRefund(parseInt(index));
+      txn = await props.contract.requestRefund(parseInt(index)); 
       await txn.wait();
       alert("Refund request sent successfully");
       let refundClaimedCopy = [...projectDetails.refundClaimed];
       refundClaimedCopy[getContributorIndex()] = true;
+
+      let amountCopy = [...projectDetails.amount];
+
 
       setProjectDetails({
         amountRaised: projectDetails.amountRaised,
@@ -252,7 +255,7 @@ function ProjectComponent(props) {
         creationTime: projectDetails.creationTime * 1,
         duration: projectDetails.duration,
         projectLink: projectDetails.projectLink,
-        amount: projectDetails.amount,
+        amount: amountCopy,
         creatorAddress: projectDetails.creatorAddress,
         refundPolicy: projectDetails.refundPolicy,
         category: projectDetails.category,
@@ -324,7 +327,7 @@ function ProjectComponent(props) {
               ></progress>
             </div>
             <div className="fundingValue">
-              <h2>{projectDetails.amountRaised / PRECISION} ETH</h2>
+              <h2>{projectDetails.amountRaised / PRECISION} ETH</h2> 
             </div>
             <p className="goalValueContainer">
               pledged of{" "}
@@ -358,7 +361,7 @@ function ProjectComponent(props) {
                   <br /> 
                   <button
                     className="supportButton"
-                    onClick={() => requestRefund()}
+                    onClick={() => requestRefund()} 
                   >
                     requestRefund
                   </button>
