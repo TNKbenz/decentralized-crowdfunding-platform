@@ -358,7 +358,7 @@ function ProjectComponent(props) {
                   <br /> 
                   <button
                     className="supportButton"
-                    onClick={() => claimRefund()}
+                    onClick={() => requestRefund()}
                   >
                     requestRefund
                   </button>
